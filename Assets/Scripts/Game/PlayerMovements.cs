@@ -22,6 +22,9 @@ public class PlayerMovements : MonoBehaviour
     public GameObject groundChecker;
     public GameObject directPointer;
     public GameObject directPointerSprite;
+    public Collider2D groundCheckCollider;
+    public LayerMask groundLayer;
+    Animator animator;
 
 
     // Start is called before the first frame update
@@ -29,11 +32,14 @@ public class PlayerMovements : MonoBehaviour
     {
         cam = Camera.main;
         rb = GetComponent<Rigidbody2D>();
+        groundCheckCollider = groundChecker.GetComponent<Collider2D>();
+        animator = GetComponent<Animator>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        groundCheck();
         if (isGrounded)
         {
             playerMove();
@@ -71,5 +77,12 @@ public class PlayerMovements : MonoBehaviour
         //directPointer.transform.rotation = rot;
         float rota = Mathf.Atan2((endPoint.y - startPoint.y),(endPoint.x - startPoint.x)) * Mathf.Rad2Deg;
         directPointer.transform.rotation = Quaternion.Euler(0, 0, rota);
+    }
+
+    void groundCheck()
+    {
+        float extraHeight = 0.5f;
+        isGrounded = Physics2D.BoxCast(groundCheckCollider.bounds.center, groundCheckCollider.bounds.size, 0f, Vector2.down, extraHeight, groundLayer);
+        animator.SetBool("Jump", !isGrounded);
     }
 }
