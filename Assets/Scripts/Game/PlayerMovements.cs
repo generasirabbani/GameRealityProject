@@ -42,11 +42,17 @@ public class PlayerMovements : MonoBehaviour
     {
         velocityVal = rb.velocity.magnitude;
         groundCheck();
+        animator.SetBool("isGrounded",isGrounded);
         if (isGrounded)
         {
+            transform.rotation = Quaternion.Euler(0, 0, 0);
             playerMove();
+            dirPointer(startPoint, currentPoint);
         }
-        dirPointer(startPoint, currentPoint);
+        if (!isGrounded)
+        {
+            rotateOnAir();
+        }
     }
 
     void playerMove()
@@ -56,6 +62,7 @@ public class PlayerMovements : MonoBehaviour
             startPoint = cam.ScreenToWorldPoint(Input.mousePosition);
             startPoint.z = 15;
             directPointerSprite.SetActive(true);
+            animator.SetBool("isCharging", true);
 
         }
         if (Input.GetMouseButton(0))
@@ -69,6 +76,7 @@ public class PlayerMovements : MonoBehaviour
             force = new Vector2(Mathf.Clamp(startPoint.x - endPoint.x, minPower.x, maxPower.x), Mathf.Clamp(startPoint.y - endPoint.y, minPower.y, maxPower.y));
             rb.AddForce(force * throwPower, ForceMode2D.Impulse);
             directPointerSprite.SetActive(false);
+            animator.SetBool("isCharging",false);
         }
     }
 
@@ -79,6 +87,14 @@ public class PlayerMovements : MonoBehaviour
         //directPointer.transform.rotation = rot;
         float rota = Mathf.Atan2((endPoint.y - startPoint.y),(endPoint.x - startPoint.x)) * Mathf.Rad2Deg;
         directPointer.transform.rotation = Quaternion.Euler(0, 0, rota);
+        if(Mathf.Abs(rota) <= 90)
+        {
+            transform.localScale = new Vector3(-1,transform.localScale.y,transform.localScale.z);
+        }
+        if(Mathf.Abs(rota) >= 90)
+        {
+            transform.localScale = new Vector3(1, transform.localScale.y, transform.localScale.z);
+        }
     }
 
     void groundCheck()
@@ -86,5 +102,13 @@ public class PlayerMovements : MonoBehaviour
         float extraHeight = 0.5f;
         isGrounded = Physics2D.BoxCast(groundCheckCollider.bounds.center, groundCheckCollider.bounds.size, 0f, Vector2.down, extraHeight, groundLayer);
         animator.SetBool("Jump", !isGrounded);
+    }
+
+    void rotateOnAir()
+    {
+        transform.localScale = new Vector3(1, transform.localScale.y, transform.localScale.z);
+        Vector2 v = rb.velocity;
+        float angle = Mathf.Atan2(v.y, v.x) * Mathf.Rad2Deg;
+        transform.rotation = Quaternion.Euler(0, 0, angle + 90);
     }
 }
