@@ -9,6 +9,7 @@ public class PlayerMovements : MonoBehaviour
     public Vector2 minPower;
     public Vector2 maxPower;
     public Vector2 force;
+    public float velocityVal;
 
     //booleanValue
     public bool isGrounded = true;
@@ -39,6 +40,7 @@ public class PlayerMovements : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        velocityVal = rb.velocity.magnitude;
         groundCheck();
         if (isGrounded)
         {

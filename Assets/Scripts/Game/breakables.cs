@@ -8,10 +8,17 @@ public class breakables : MonoBehaviour
     public bool playerIsAbove;
     public float breakTime;
     public bool playerIsBelow;
+    public float time = 0;
+    public float breakVelocity;
+    public GameObject player;
+    Rigidbody2D playerRB;
+    public bottomcollider bottomcollider;
 
     void Start()
     {
-        
+        player = GameObject.FindWithTag("Player");
+        playerRB = player.GetComponent<Rigidbody2D>();
+        time = 0;
     }
 
     // Update is called once per frame
@@ -19,7 +26,15 @@ public class breakables : MonoBehaviour
     {
         if (playerIsAbove)
         {
-            StartCoroutine(breaks(breakTime));
+            time += Time.deltaTime;
+        }
+        if(time > breakTime)
+        {
+            breaks();
+        }
+        if(bottomcollider.playerIsBelow && playerRB.velocity.magnitude >= breakVelocity)
+        {
+            breaks();
         }
     }
 
@@ -35,13 +50,21 @@ public class breakables : MonoBehaviour
         if (collision.gameObject.CompareTag("Player"))
         {
             playerIsAbove = false;
+            time = 0;
         }
     }
-    
 
-    IEnumerator breaks(float time)
+    //private void OnCollisionEnter2D(Collision2D collision)
+    //{
+        //if (collision.gameObject.CompareTag("Player") && playerRB.velocity.magnitude >= breakVelocity)
+        //{
+            //breaks();
+        //}
+
+    //}
+
+    void breaks()
     {
-        yield return new WaitForSeconds(time);
         this.gameObject.SetActive(false);
     }
 }
