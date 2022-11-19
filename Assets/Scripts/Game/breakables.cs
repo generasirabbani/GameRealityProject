@@ -13,12 +13,14 @@ public class breakables : MonoBehaviour
     public GameObject player;
     Rigidbody2D playerRB;
     public bottomcollider bottomcollider;
+    Animator anim;
 
     void Start()
     {
         player = GameObject.FindWithTag("Player");
         playerRB = player.GetComponent<Rigidbody2D>();
         time = 0;
+        anim = GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -30,11 +32,11 @@ public class breakables : MonoBehaviour
         }
         if(time > breakTime)
         {
-            breaks();
+            StartCoroutine(breaks(0.2f));
         }
         if(bottomcollider.playerIsBelow && playerRB.velocity.magnitude >= breakVelocity)
         {
-            breaks();
+            StartCoroutine(breaks(0.2f));
         }
     }
 
@@ -63,8 +65,10 @@ public class breakables : MonoBehaviour
 
     //}
 
-    void breaks()
+    IEnumerator breaks(float time)
     {
+        anim.SetTrigger("break");
+        yield return new WaitForSeconds(time);
         this.gameObject.SetActive(false);
     }
 }
