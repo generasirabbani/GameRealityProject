@@ -19,9 +19,9 @@ public class MainMenu : MonoBehaviour
         }
     }
 
-    public void StartGame()
+    public void StartGame(string scenename)
     {
-        Debug.Log("Started");
+        SceneManager.LoadScene(scenename);
     }
 
     public void Settings()

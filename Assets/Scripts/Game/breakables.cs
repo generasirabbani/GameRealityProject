@@ -14,6 +14,7 @@ public class breakables : MonoBehaviour
     Rigidbody2D playerRB;
     public bottomcollider bottomcollider;
     Animator anim;
+    public AudioSource audios;
 
     void Start()
     {
@@ -68,6 +69,7 @@ public class breakables : MonoBehaviour
     IEnumerator breaks(float time)
     {
         anim.SetTrigger("break");
+        audios.Play();
         yield return new WaitForSeconds(time);
         this.gameObject.SetActive(false);
     }

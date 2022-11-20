@@ -26,6 +26,7 @@ public class PlayerMovements : MonoBehaviour
     public Collider2D groundCheckCollider;
     public LayerMask groundLayer;
     Animator animator;
+    public AudioSource audioSource;
 
 
     // Start is called before the first frame update
@@ -101,7 +102,6 @@ public class PlayerMovements : MonoBehaviour
     {
         float extraHeight = 0.5f;
         isGrounded = Physics2D.BoxCast(groundCheckCollider.bounds.center, groundCheckCollider.bounds.size, 0f, Vector2.down, extraHeight, groundLayer);
-        animator.SetBool("Jump", !isGrounded);
     }
 
     void rotateOnAir()
@@ -110,5 +110,13 @@ public class PlayerMovements : MonoBehaviour
         Vector2 v = rb.velocity;
         float angle = Mathf.Atan2(v.y, v.x) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.Euler(0, 0, angle + 90);
+    }
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.layer == 6)
+        {
+            audioSource.Play();
+        }
+
     }
 }
