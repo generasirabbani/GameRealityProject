@@ -30,6 +30,7 @@ public class menuManage : MonoBehaviour
     {
         Time.timeScale = 0f;
         pausemenu.SetActive(true);
+        isPaused = true;
     }
 
     public void changeSceneByName(string name)
@@ -42,6 +43,7 @@ public class menuManage : MonoBehaviour
     {
         Time.timeScale = 1.0f;
         pausemenu.SetActive(false);
+        isPaused = false;
     }
 
     public void rePlay()
