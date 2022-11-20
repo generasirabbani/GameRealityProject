@@ -106,7 +106,7 @@ public class PlayerMovements : MonoBehaviour
 
     void rotateOnAir()
     {
-        transform.localScale = new Vector3(1, transform.localScale.y, transform.localScale.z);
+        //transform.localScale = new Vector3(1, transform.localScale.y, transform.localScale.z);
         Vector2 v = rb.velocity;
         float angle = Mathf.Atan2(v.y, v.x) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.Euler(0, 0, angle + 90);
