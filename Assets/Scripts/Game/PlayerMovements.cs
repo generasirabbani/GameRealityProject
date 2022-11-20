@@ -27,6 +27,7 @@ public class PlayerMovements : MonoBehaviour
     public LayerMask groundLayer;
     Animator animator;
     public AudioSource audioSource;
+    public menuManage menu;
 
 
     // Start is called before the first frame update
@@ -44,7 +45,7 @@ public class PlayerMovements : MonoBehaviour
         velocityVal = rb.velocity.magnitude;
         groundCheck();
         animator.SetBool("isGrounded",isGrounded);
-        if (isGrounded)
+        if (isGrounded && menu.isPaused == false)
         {
             transform.rotation = Quaternion.Euler(0, 0, 0);
             playerMove();
