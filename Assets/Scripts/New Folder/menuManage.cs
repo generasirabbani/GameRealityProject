@@ -16,11 +16,13 @@ public class menuManage : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(!isPaused && Input.GetKeyDown(KeyCode.Escape))
+        isPaused = pausemenu.activeSelf;
+        if(isPaused == false && Input.GetKeyDown(KeyCode.Escape))
         {
             doPause();
         }
-        if(isPaused && Input.GetKeyDown(KeyCode.Escape))
+
+        if(isPaused == true && Input.GetKeyDown(KeyCode.Escape))
         {
             doResume();
         }
@@ -30,7 +32,6 @@ public class menuManage : MonoBehaviour
     {
         Time.timeScale = 0f;
         pausemenu.SetActive(true);
-        isPaused = true;
     }
 
     public void changeSceneByName(string name)
@@ -43,7 +44,6 @@ public class menuManage : MonoBehaviour
     {
         Time.timeScale = 1.0f;
         pausemenu.SetActive(false);
-        isPaused = false;
     }
 
     public void rePlay()
